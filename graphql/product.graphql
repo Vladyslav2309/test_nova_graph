@@ -1,0 +1,21 @@
+type Product {
+    id: ID!
+    slug: String!
+    name: String!
+    description: String
+    price: Float!
+    sku: String
+    quantity: Int
+    is_published: Boolean!
+    brand: Brand!
+}
+
+extend type Query {
+    product(
+
+        id: ID @eq @rules(apply: ["required"])
+    ): Product @find
+
+
+    products: [Product!]! @paginate(defaultCount: 10)
+}

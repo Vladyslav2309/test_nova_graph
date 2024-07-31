@@ -1,0 +1,19 @@
+type Brand {
+
+    id: ID!
+    name: String!
+    industry: String
+    is_published: Boolean!
+    products: [Product!]!
+}
+
+extend type Query {
+    brand(
+
+        id: ID @eq @rules(apply: ["required"])
+    ): Brand @find
+
+
+    brands: [Brand!]! @paginate(defaultCount: 10)
+
+}

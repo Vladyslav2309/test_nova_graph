@@ -7,6 +7,7 @@ use App\Nova\Metrics\AveragePrice;
 use App\Nova\Metrics\NewProducts;
 use App\Nova\Metrics\ProductsPerDay;
 use Kongulov\NovaTabTranslatable\NovaTabTranslatable;
+use Kongulov\NovaTabTranslatable\TranslatableTabToRowTrait;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Number;
@@ -18,7 +19,7 @@ use Outl1ne\NovaSortable\Traits\HasSortableRows;
 
 class Product extends Resource
 {
-    use HasSortableRows;
+    use HasSortableRows, TranslatableTabToRowTrait;
 
     /**
      * The model the resource corresponds to.
