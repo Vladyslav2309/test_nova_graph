@@ -1,21 +1,36 @@
 type Product {
-    id: ID!
-    slug: String!
-    name: String!
+    id: ID
+    slug: String
+    name: String
     description: String
-    price: Float!
+    price: Float
     sku: String
     quantity: Int
-    is_published: Boolean!
-    brand: Brand!
+    is_published: Boolean
+    brand: Brand
+}
+
+type ProductsList {
+    data: [Product]
+    paginatorInfo: PaginatorInfo
+}
+
+input ProductInput {
+    id: ID @rules(apply: ["required", "exists:products,id"])
+}
+
+input AllProductsInput {
+    search: String @rules(apply: ["nullable", "string", "max:255"])
+    first: Int @rules(apply: ["required", "min:1"])
+    page: Int @rules(apply: ["required", "int", "min:1"])
+    sort: String @rules(apply: ["nullable", "string", "max:255"])
+    order: String @rules(apply: ["nullable", "string", "in:asc,desc"])
 }
 
 extend type Query {
-    product(
+    "View single Product."
+    product(input: ProductInput! @spread): Product
 
-        id: ID @eq @rules(apply: ["required"])
-    ): Product @find
-
-
-    products: [Product!]! @paginate(defaultCount: 10)
+    "View all Products with pagination."
+    allProducts(input: AllProductsInput! @spread): ProductsList!
 }

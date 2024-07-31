@@ -1,5 +1,4 @@
 type Brand {
-
     id: ID!
     name: String!
     industry: String
@@ -7,13 +6,27 @@ type Brand {
     products: [Product!]!
 }
 
+type BrandsList {
+    data: [Brand]
+    paginatorInfo: PaginatorInfo
+}
+
+input BrandInput {
+    id: ID @rules(apply: ["required", "exists:brands,id"])
+}
+
+input AllBrandsInput {
+    search: String @rules(apply: ["nullable", "string", "max:255"])
+    first: Int @rules(apply: ["required", "min:1"])
+    page: Int @rules(apply: ["required", "int", "min:1"])
+    sort: String @rules(apply: ["nullable", "string", "max:255"])
+    order: String @rules(apply: ["nullable", "string", "in:asc,desc"])
+}
+
 extend type Query {
-    brand(
+    "View single Brand."
+    brand(input: BrandInput! @spread): Brand
 
-        id: ID @eq @rules(apply: ["required"])
-    ): Brand @find
-
-
-    brands: [Brand!]! @paginate(defaultCount: 10)
-
+    "View all Brands with pagination."
+    allBrands(input: AllBrandsInput! @spread): BrandsList!
 }
