@@ -7,7 +7,12 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ProductsService
 {
-    public function findAll(array $filters, int $page, int $perPage, string $sortBy, string $order): LengthAwarePaginator
+
+    public function find(string $slug, bool $withTrashed = false): mixed
+    {
+        return Product::query()->where('is_published', true)->where('slug', $slug)->first();
+    }
+    public function findAll(?array $filters, int $page=1, int $first=10, string $sort='name', string $order = 'desc'): LengthAwarePaginator
     {
         $query = Product::query();
 
@@ -16,9 +21,9 @@ class ProductsService
             $query->where('name', 'like', "%{$filters['search']}%");
         }
 
-        $query->orderBy($sortBy, $order);
+        $query->orderBy($sort, $order);
 
 
-        return $query->paginate($perPage, ['*'], 'page', $page);
+        return $query->paginate($first, ['*'], 'page', $page);
     }
 }

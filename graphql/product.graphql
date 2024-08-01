@@ -16,7 +16,7 @@ type ProductsList {
 }
 
 input ProductInput {
-    id: ID @rules(apply: ["required", "exists:products,id"])
+    slug: String @rules(apply: ["required", "string", "exists:products,slug"])
 }
 
 input AllProductsInput {

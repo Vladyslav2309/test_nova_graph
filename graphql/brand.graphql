@@ -24,9 +24,8 @@ input AllBrandsInput {
 }
 
 extend type Query {
-    "View single Brand."
+
     brand(input: BrandInput! @spread): Brand
 
-    "View all Brands with pagination."
     allBrands(input: AllBrandsInput! @spread): BrandsList!
 }

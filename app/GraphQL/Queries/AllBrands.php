@@ -3,26 +3,36 @@
 namespace App\GraphQL\Queries;
 
 use App\Models\Brand;
+use App\Models\Product;
+use App\Services\BrandsService;
+
 
 class AllBrands
 {
+    protected BrandsService $brands;
+
+    public function __construct(BrandsService $brands)
+    {
+        $this->brands = $brands;
+    }
+
     public function __invoke($_, array $args): array
     {
         $query = Brand::query();
 
-        if (!empty($args['input']['search'])) {
-            $query->where('name', 'like', '%' . $args['input']['search'] . '%');
+        if (!empty($args['search'])) {
+            $query->where('name', 'like', '%' . $args['search'] . '%');
         }
 
-        if (!empty($args['input']['sort']) && !empty($args['input']['order'])) {
-            $query->orderBy($args['input']['sort'], $args['input']['order']);
+        if (!empty($args['sort']) && !empty($args['order'])) {
+            $query->orderBy($args['sort'], $args['order']);
         }
 
         $paginator = $query->paginate(
-            $args['input']['first'] ?? 10,
+            $args['first'] ?? 10,
             ['*'],
             'page',
-            $args['input']['page'] ?? 1
+            $args['page'] ?? 1
         );
 
         return [
