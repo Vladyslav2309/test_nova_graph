@@ -20,33 +20,27 @@ class AllProducts
     {
         $this->products = $products;
     }
-
     public function __invoke($_, array $args): array
     {
-        $query = Product::query();
+        $page = $args['page'] ?? 1;
 
-        if (!empty($args['search'])) {
-            $query->where('name', 'like', '%' . $args['search'] . '%');
-        }
-
-        if (!empty($args['sort']) && !empty($args['order'])) {
-            $query->orderBy($args['sort'], $args['order']);
-        }
-
-        $paginator = $query->paginate(
+        $products = $this->products->findAll([
+            'search' => $args['search'] ?? null,
+        ],
+            $page,
             $args['first'] ?? 10,
-            ['*'],
-            'page',
-            $args['page'] ?? 1
+            $args['sort'] ?? 'created_at',
+            $args['order'] ?? 'desc',
         );
 
         return [
-            'data' => $paginator->items(),
+            'data' => $products,
             'paginatorInfo' => [
-                'currentPage' => $paginator->currentPage(),
-                'lastPage' => $paginator->lastPage(),
-                'total' => $paginator->total(),
+                'currentPage' => $page,
+                'lastPage' => $products->lastPage(),
+                'total' => $products->total(),
             ],
         ];
     }
+
 }
