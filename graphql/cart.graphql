@@ -1,0 +1,27 @@
+type Cart {
+    id: ID!
+    user: User!
+    items: [CartItem!]!
+    created_at: DateTime!
+    updated_at: DateTime!
+}
+
+type CartItem {
+    id: ID!
+    cart: Cart!
+    product: Product!
+    quantity: Int!
+    price: Float!
+    created_at: DateTime!
+    updated_at: DateTime!
+}
+
+extend type Query {
+    cart(user_id: ID!): Cart
+}
+
+extend type Mutation {
+    addToCart(user_id: ID!, product_id: ID!, quantity: Int!): CartItem @field(resolver: "App\\GraphQL\\Mutations\\AddToCart@__invoke")
+    removeFromCart(cart_item_id: ID!): Boolean @field(resolver: "App\\GraphQL\\Mutations\\CartMutations@removeFromCart")
+    updateCartItem(cart_item_id: ID!, quantity: Int!): CartItem
+}

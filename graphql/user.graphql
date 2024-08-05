@@ -6,6 +6,9 @@ type User {
     created_at: DateTime!
     updated_at: DateTime!
 }
+type Mutation{
+    createUser(name:String,email:String, password:String!):User
+}
 type Query {
     user(id: ID @eq @rules(apply: ["prohibits:email", "required_without:email"])
 

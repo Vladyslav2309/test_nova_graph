@@ -3,31 +3,24 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
-return new class extends Migration
+class AddSortOrderToProductsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
+    public function up()
     {
         Schema::table('products', function (Blueprint $table) {
-            Schema::table('products', function (Blueprint $table) {
+            if (!Schema::hasColumn('products', 'sort_order')) {
                 $table->integer('sort_order')->default(0);
-            });
-
-            DB::statement('UPDATE products SET sort_order = id');
+            }
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
+    public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            //
+            if (Schema::hasColumn('products', 'sort_order')) {
+                $table->dropColumn('sort_order');
+            }
         });
     }
-};
+}

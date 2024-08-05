@@ -4,3 +4,4 @@
 #import product.graphql
 #import user.graphql
 #import types.graphql
+#import cart.graphql
