@@ -12,6 +12,8 @@ class CartService
 {
     public function addToCart(int $userId, int $productId, int $quantity)
     {
+        // попробуй переробити, без КартАйтем і зробити через звязок БагатоДоБагатьох сутності Карт до Продуктів з додатковими полями такими як Кількість і ціна
+        // і попробуй передавати масив айдішок, не бійся пробувати щось калхозити
         $user = User::find($userId);
         $product = Product::find($productId);
 
