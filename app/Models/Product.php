@@ -13,7 +13,7 @@ use Spatie\EloquentSortable\SortableTrait;
 
 class Product extends Model
 {
-    use HasFactory, HasTranslations, HasSlug, SoftDeletes,SortableTrait;
+    use HasFactory, HasTranslations, SoftDeletes,SortableTrait;
 
     public array $sortable = [
         'order_column_name' => 'sort_order',
